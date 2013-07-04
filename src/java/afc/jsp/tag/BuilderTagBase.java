@@ -27,6 +27,7 @@ import java.util.TreeMap;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
+import javax.servlet.jsp.tagext.JspFragment;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import afc.util.DevNull;
@@ -46,7 +47,10 @@ public abstract class BuilderTagBase extends SimpleTagSupport
     @Override
     public final void doTag() throws JspException, IOException
     {
-        getJspBody().invoke(DevNull.instance);
+        final JspFragment body = getJspBody();
+        if (body != null) { // else invoke build against no events
+            body.invoke(DevNull.instance);
+        }
         build();
     }
     
