@@ -50,7 +50,7 @@ public abstract class BuilderTagBase extends SimpleTagSupport
         build();
     }
     
-    public abstract void build() throws JspException, IOException;
+    protected abstract void build() throws JspException, IOException;
     
     public final void raiseEvent(final String name) throws JspException, IOException
     {
