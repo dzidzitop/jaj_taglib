@@ -16,6 +16,7 @@ public class BuilderTagBase_NoEventsTest extends TestCase
         
         tag.doTag();
         
+        assertTrue(tag.buildInvoked);
         assertTrue(body.invoked);
         assertEquals("", out.getOutput());
     }
@@ -31,15 +32,19 @@ public class BuilderTagBase_NoEventsTest extends TestCase
         
         tag.doTag();
         
+        assertTrue(tag.buildInvoked);
         assertEquals("", out.getOutput());
     }
     
     private static class NoEventsTag extends BuilderTagBase
     {
+        public boolean buildInvoked;
+        
         @Override
         protected void build()
         {
-            return;
+            assertFalse(buildInvoked);
+            buildInvoked = true;
         }
     }
 }
