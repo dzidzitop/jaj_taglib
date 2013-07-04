@@ -1,0 +1,42 @@
+<project name="JAJ Taglib" default="make" basedir=".">
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="src.dir" value="${basedir}/src/java"/>
+	<property name="classes.dir" value="${build.dir}/classes"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="jar.name" value="jaj_taglib.jar"/>
+	<property name="jar.file" value="${build.dir}/${jar.name}"/>
+	
+	<property name="copyright.file" value="${basedir}/COPYING"/>
+	
+	<property name="debug.enabled" value="true"/>
+	<property name="java.src.version" value="1.5"/>
+	
+	<target name="clean">
+		<delete dir="${classes.dir}" failonerror="true"/>
+		<delete file="${jar.file}" failonerror="true"/>
+	</target>
+	
+	<target name="init">
+		<mkdir dir="${build.dir}"/>
+	</target>
+
+	<target name="compile" depends="init">
+		<mkdir dir="${classes.dir}"/>
+		
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="${debug.enabled}" source="${java.src.version}"
+				encoding="UTF-8" includeantruntime="false">
+			<classpath>
+				<fileset dir="${lib.dir}"/>
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<jar destfile="${jar.file}">
+			<zipfileset dir="${classes.dir}" includes="**"/>
+			<zipfileset file="${copyright.file}" prefix="META-INF"/>
+		</jar>
+	</target>
+	
+	<target name="make" depends="compile,jar,init"/>
+</project>
