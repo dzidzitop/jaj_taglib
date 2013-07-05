@@ -61,7 +61,7 @@ public abstract class BuilderTagBase extends SimpleTagSupport
     
     protected abstract void build() throws JspException, IOException;
     
-    public final void raiseEvent(final String name) throws JspException, IOException
+    protected final void raiseEvent(final String name) throws JspException, IOException
     {
         final EventTag event = events.get(name);
         if (event != null) {
