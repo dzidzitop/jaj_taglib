@@ -10,19 +10,19 @@ import javax.servlet.jsp.tagext.SimpleTag;
 
 import junit.framework.Assert;
 
-public class PushEventsJspFragment extends JspFragment
+public class CallTagsJspFragment extends JspFragment
 {
     public boolean invoked;
     
     private final SimpleTag[] tags;
     private final String textToWrite;
     
-    public PushEventsJspFragment(final SimpleTag... tags)
+    public CallTagsJspFragment(final SimpleTag... tags)
     {
         this("", tags);
     }
     
-    public PushEventsJspFragment(final String textToWrite, final SimpleTag... tags)
+    public CallTagsJspFragment(final String textToWrite, final SimpleTag... tags)
     {
         Assert.assertNotNull(tags);
         this.tags = tags;

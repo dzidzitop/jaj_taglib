@@ -10,7 +10,7 @@ public class BuilderTagBase_BuildGridTest extends TestCase
     private EventTag rowEndTag;
     private EventTag cellTag;
     private GridTag gridTag;
-    private PushEventsJspFragment body;
+    private CallTagsJspFragment body;
     
     @Override
     protected void setUp()
@@ -25,7 +25,7 @@ public class BuilderTagBase_BuildGridTest extends TestCase
         rowEndTag = initEvent("rowEnd", '$');
         cellTag = initEvent("cell", '-');
         
-        body = new PushEventsJspFragment("foo", rowStartTag, rowEndTag, cellTag);
+        body = new CallTagsJspFragment("foo", rowStartTag, rowEndTag, cellTag);
         gridTag.setJspBody(body);
     }
     

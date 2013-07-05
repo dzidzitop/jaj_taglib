@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 public class BuilderTagBase_NoEventsTest extends TestCase
 {
-    private PushEventsJspFragment body;
+    private CallTagsJspFragment body;
     private StringJspWriter out;
     private MockJspContext ctx;
     private NoEventsTag tag;
@@ -16,7 +16,7 @@ public class BuilderTagBase_NoEventsTest extends TestCase
     @Override
     protected void setUp()
     {
-        body = new PushEventsJspFragment("foo");
+        body = new CallTagsJspFragment("foo");
         out = new StringJspWriter();
         ctx = new MockJspContext(out);
         tag = new NoEventsTag();

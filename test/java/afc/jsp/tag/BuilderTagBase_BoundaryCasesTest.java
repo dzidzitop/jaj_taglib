@@ -48,7 +48,7 @@ public class BuilderTagBase_BoundaryCasesTest extends TestCase
         final EventTag rowStartTag = initEvent("rowStart", '^');
         final EventTag cellTag = initEvent("cell", '-');
         
-        final PushEventsJspFragment body = new PushEventsJspFragment("foo", rowStartTag, cellTag);
+        final CallTagsJspFragment body = new CallTagsJspFragment("foo", rowStartTag, cellTag);
         gridTag.setJspBody(body);
         
         gridTag.rowCount = 3;
@@ -80,9 +80,9 @@ public class BuilderTagBase_BoundaryCasesTest extends TestCase
         cellTagParent.setJspContext(ctx);
         cellTagParent.setParent(gridTag);
         final EventTag cellTag = initEvent(cellTagParent, "cell", '-');
-        cellTagParent.setJspBody(new PushEventsJspFragment(cellTag));
+        cellTagParent.setJspBody(new CallTagsJspFragment(cellTag));
         
-        final PushEventsJspFragment body = new PushEventsJspFragment("foo", rowStartTag, rowEndTag, cellTagParent);
+        final CallTagsJspFragment body = new CallTagsJspFragment("foo", rowStartTag, rowEndTag, cellTagParent);
         gridTag.setJspBody(body);
         
         gridTag.rowCount = 3;
