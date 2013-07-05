@@ -170,8 +170,8 @@ public class StringJspWriter extends JspWriter
     }
 
     @Override
-    public void write(char[] arg0, int arg1, int arg2) throws IOException
+    public void write(final char[] buf, int off, int len) throws IOException
     {
-        throw new UnsupportedOperationException("implement me");
+        output.append(buf, off, len);
     }
 }
