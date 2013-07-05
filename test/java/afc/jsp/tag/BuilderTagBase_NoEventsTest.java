@@ -1,17 +1,31 @@
 package afc.jsp.tag;
 
+import java.io.IOException;
+
+import javax.servlet.jsp.JspException;
+
 import junit.framework.TestCase;
 
 public class BuilderTagBase_NoEventsTest extends TestCase
 {
+    private PushEventsJspFragment body;
+    private StringJspWriter out;
+    private MockJspContext ctx;
+    private NoEventsTag tag;
+    
+    @Override
+    protected void setUp()
+    {
+        body = new PushEventsJspFragment("foo");
+        out = new StringJspWriter();
+        ctx = new MockJspContext(out);
+        tag = new NoEventsTag();
+        
+        tag.setJspBody(body);
+    }
+    
     public void testBuildWithNoEvents() throws Exception
     {
-        final PushEventsJspFragment body = new PushEventsJspFragment("foo");
-        final StringJspWriter out = new StringJspWriter();
-        final MockJspContext ctx = new MockJspContext(out);
-        final NoEventsTag tag = new NoEventsTag();
-        
-        tag.setJspContext(ctx);
         tag.setJspBody(body);
         
         tag.doTag();
@@ -23,11 +37,6 @@ public class BuilderTagBase_NoEventsTest extends TestCase
     
     public void testBuildWithNoEventsAndNoBody() throws Exception
     {
-        final StringJspWriter out = new StringJspWriter();
-        final MockJspContext ctx = new MockJspContext(out);
-        final NoEventsTag tag = new NoEventsTag();
-        
-        tag.setJspContext(ctx);
         tag.setJspBody(null);
         
         tag.doTag();
@@ -36,14 +45,8 @@ public class BuilderTagBase_NoEventsTest extends TestCase
         assertEquals("", out.getOutput());
     }
     
-    public void testBuildWithNoEvents_ExceptionIsThrownByBuild() throws Exception
+    public void testBuildWithNoEvents_RuntimeExceptionIsThrownByBuild() throws Exception
     {
-        final PushEventsJspFragment body = new PushEventsJspFragment("foo");
-        final StringJspWriter out = new StringJspWriter();
-        final MockJspContext ctx = new MockJspContext(out);
-        final NoEventsTag tag = new NoEventsTag();
-        
-        tag.setJspContext(ctx);
         tag.setJspBody(body);
         
         final RuntimeException exception = new RuntimeException();
@@ -62,18 +65,86 @@ public class BuilderTagBase_NoEventsTest extends TestCase
         assertEquals("", out.getOutput());
     }
     
+    public void testBuildWithNoEvents_ErrorIsThrownByBuild() throws Exception
+    {
+        tag.setJspBody(body);
+        
+        final Error exception = new Error();
+        tag.exceptionToThrow = exception;
+        
+        try {
+            tag.doTag();
+            fail();
+        }
+        catch (Error ex) {
+            assertSame(exception, ex);
+        }
+        
+        assertTrue(tag.buildInvoked);
+        assertTrue(body.invoked);
+        assertEquals("", out.getOutput());
+    }
+    
+    public void testBuildWithNoEvents_IOExceptionIsThrownByBuild() throws Exception
+    {
+        tag.setJspBody(null);
+        
+        final IOException exception = new IOException();
+        tag.exceptionToThrow = exception;
+        
+        try {
+            tag.doTag();
+            fail();
+        }
+        catch (IOException ex) {
+            assertSame(exception, ex);
+        }
+        
+        assertTrue(tag.buildInvoked);
+        assertEquals("", out.getOutput());
+    }
+    
+    public void testBuildWithNoEvents_JspExceptionIsThrownByBuild() throws Exception
+    {
+        tag.setJspBody(body);
+        
+        final JspException exception = new JspException();
+        tag.exceptionToThrow = exception;
+        
+        try {
+            tag.doTag();
+            fail();
+        }
+        catch (JspException ex) {
+            assertSame(exception, ex);
+        }
+        
+        assertTrue(tag.buildInvoked);
+        assertTrue(body.invoked);
+        assertEquals("", out.getOutput());
+    }
+    
     private static class NoEventsTag extends BuilderTagBase
     {
-        public RuntimeException exceptionToThrow;
+        public Throwable exceptionToThrow;
         public boolean buildInvoked;
         
         @Override
-        protected void build()
+        protected void build() throws IOException, JspException
         {
             assertFalse(buildInvoked);
             buildInvoked = true;
-            if (exceptionToThrow != null) {
-                throw exceptionToThrow;
+            if (exceptionToThrow instanceof RuntimeException) {
+                throw (RuntimeException) exceptionToThrow;
+            }
+            if (exceptionToThrow instanceof Error) {
+                throw (Error) exceptionToThrow;
+            }
+            if (exceptionToThrow instanceof IOException) {
+                throw (IOException) exceptionToThrow;
+            }
+            if (exceptionToThrow instanceof JspException) {
+                throw (JspException) exceptionToThrow;
             }
         }
     }
