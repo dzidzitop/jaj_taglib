@@ -47,9 +47,9 @@ public final class EventTag extends SimpleTagSupport
     @Override
     public void doTag() throws JspException, IOException
     {
-        final JspTag parent = getParent();
-        if (!(parent instanceof BuilderTagBase)) {
-            throw new JspTagException("EventTag must be enclosed directly by a BuilderTagBase tag");
+        final JspTag parent = findAncestorWithClass(this, BuilderTagBase.class);
+        if (parent == null) {
+            throw new JspTagException("EventTag must be enclosed directly or indirectly by a BuilderTagBase tag");
         }
         ((BuilderTagBase) parent).register(this);
     }

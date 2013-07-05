@@ -6,6 +6,7 @@ import java.io.Writer;
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.JspFragment;
+import javax.servlet.jsp.tagext.SimpleTag;
 
 import junit.framework.Assert;
 
@@ -13,13 +14,18 @@ public class PushEventsJspFragment extends JspFragment
 {
     public boolean invoked;
     
-    private final EventTag[] events;
+    private final SimpleTag[] tags;
     private final String textToWrite;
     
-    public PushEventsJspFragment(final String textToWrite, final EventTag... events)
+    public PushEventsJspFragment(final SimpleTag... tags)
     {
-        Assert.assertNotNull(events);
-        this.events = events;
+        this("", tags);
+    }
+    
+    public PushEventsJspFragment(final String textToWrite, final SimpleTag... tags)
+    {
+        Assert.assertNotNull(tags);
+        this.tags = tags;
         this.textToWrite = textToWrite;
     }
     
@@ -35,8 +41,8 @@ public class PushEventsJspFragment extends JspFragment
         Assert.assertFalse(invoked);
         invoked = true;
         out.write(textToWrite);
-        for (final EventTag event : events) {
-            event.doTag();
+        for (final SimpleTag tag : tags) {
+            tag.doTag();
         }
     }
 
