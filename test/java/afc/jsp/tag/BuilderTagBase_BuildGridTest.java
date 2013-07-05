@@ -1,12 +1,5 @@
 package afc.jsp.tag;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import javax.servlet.jsp.JspContext;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.JspFragment;
-
 import junit.framework.TestCase;
 
 public class BuilderTagBase_BuildGridTest extends TestCase
@@ -104,49 +97,5 @@ public class BuilderTagBase_BuildGridTest extends TestCase
         assertTrue(gridTag.buildInvoked);
         assertTrue(body.invoked);
         assertEquals("^---$^---$", out.getOutput());
-    }
-    
-    private static class GridTag extends BuilderTagBase
-    {
-        public boolean buildInvoked;
-        
-        public int rowCount;
-        public int columnCount;
-        
-        @Override
-        protected void build() throws IOException, JspException
-        {
-            assertFalse(buildInvoked);
-            buildInvoked = true;
-            for (int i = 0; i < rowCount; ++i) {
-                raiseEvent("rowStart");
-                for (int j = 0; j < columnCount; ++j) {
-                    raiseEvent("cell");
-                }
-                raiseEvent("rowEnd");
-            }
-        }
-    }
-    
-    private static class PrintCharJspFragment extends JspFragment
-    {
-        private final char c;
-        
-        public PrintCharJspFragment(final char c)
-        {
-            this.c = c;
-        }
-        
-        @Override
-        public JspContext getJspContext()
-        {
-            throw new UnsupportedOperationException("implement me");
-        }
-
-        @Override
-        public void invoke(final Writer out) throws JspException, IOException
-        {
-            out.write(c);
-        }
     }
 }
