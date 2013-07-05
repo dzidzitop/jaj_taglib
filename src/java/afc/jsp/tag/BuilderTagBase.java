@@ -38,9 +38,14 @@ public abstract class BuilderTagBase extends SimpleTagSupport
     
     void register(final EventTag event) throws JspTagException
     {
+        final String name = event.getName();
+        // TODO check if this could be checked by a tag validator
+        if (name == null || name.length() == 0) {
+            throw new JspTagException("Event name is undefined.");
+        }
         // TODO check if this could be checked by a tag validator
         if (events.put(event.getName(), event) != null) {
-            throw new JspTagException("duplicate event: " + event.getName());
+            throw new JspTagException("Duplicate event handler for the event '" + name + "'.");
         }
     }
     

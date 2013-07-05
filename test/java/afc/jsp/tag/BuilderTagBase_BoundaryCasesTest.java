@@ -62,6 +62,29 @@ public class BuilderTagBase_BoundaryCasesTest extends TestCase
     }
     
     /**
+     * Tests that events handlers for the events that are not used are allowed (though useless).
+     */
+    public void testBuildGrid_UnusedEventsRegistered() throws Exception
+    {
+        final EventTag rowStartTag = initEvent("rowStart", '^');
+        final EventTag rowEndTag = initEvent("rowEnd", '$');
+        final EventTag cellTag = initEvent("cell", '-');
+        final EventTag unusedTag = initEvent("unused", '-');
+        
+        final CallTagsJspFragment body = new CallTagsJspFragment("foo", rowStartTag, rowEndTag, cellTag, unusedTag);
+        gridTag.setJspBody(body);
+        
+        gridTag.rowCount = 3;
+        gridTag.columnCount = 2;
+        
+        gridTag.doTag();
+        
+        assertTrue(gridTag.buildInvoked);
+        assertTrue(body.invoked);
+        assertEquals("^--$^--$^--$", out.getOutput());
+    }
+    
+    /**
      * Tests that event tag's parents are scanned deeply to find a BuilderTagBase parent.
      */
     public void testBuildGrid_EventsWithIndirectBuilderParentTag() throws Exception
@@ -93,5 +116,81 @@ public class BuilderTagBase_BoundaryCasesTest extends TestCase
         assertTrue(gridTag.buildInvoked);
         assertTrue(body.invoked);
         assertEquals("^--$^--$^--$", out.getOutput());
+    }
+    
+    public void testBuildGrid_EventWithNullNameTag() throws Exception
+    {
+        final EventTag rowStartTag = initEvent("rowStart", '^');
+        final EventTag rowEndTag = initEvent("rowEnd", '$');
+        final EventTag cellTag = initEvent(null, '-');
+        
+        final CallTagsJspFragment body = new CallTagsJspFragment("foo", rowStartTag, rowEndTag, cellTag);
+        gridTag.setJspBody(body);
+        
+        gridTag.rowCount = 3;
+        gridTag.columnCount = 2;
+        
+        try {
+            gridTag.doTag();
+            fail();
+        }
+        catch (JspException ex) {
+            assertEquals("Event name is undefined.", ex.getMessage());
+        }
+        
+        assertFalse(gridTag.buildInvoked);
+        assertTrue(body.invoked);
+        assertEquals("", out.getOutput());
+    }
+    
+    public void testBuildGrid_EventWithEmptyNameTag() throws Exception
+    {
+        final EventTag rowStartTag = initEvent("rowStart", '^');
+        final EventTag rowEndTag = initEvent("rowEnd", '$');
+        final EventTag cellTag = initEvent(null, '-');
+        
+        final CallTagsJspFragment body = new CallTagsJspFragment("foo", rowStartTag, rowEndTag, cellTag);
+        gridTag.setJspBody(body);
+        
+        gridTag.rowCount = 3;
+        gridTag.columnCount = 2;
+        
+        try {
+            gridTag.doTag();
+            fail();
+        }
+        catch (JspException ex) {
+            assertEquals("Event name is undefined.", ex.getMessage());
+        }
+        
+        assertFalse(gridTag.buildInvoked);
+        assertTrue(body.invoked);
+        assertEquals("", out.getOutput());
+    }
+    
+    public void testBuildGrid_EventsWithTheSameNameTag() throws Exception
+    {
+        final EventTag rowStartTag = initEvent("rowStart", '^');
+        final EventTag rowEndTag = initEvent("rowEnd", '$');
+        final EventTag cellTag = initEvent("cell", '-');
+        final EventTag cellTag2 = initEvent("cell", '-');
+        
+        final CallTagsJspFragment body = new CallTagsJspFragment("foo", rowStartTag, rowEndTag, cellTag, cellTag2);
+        gridTag.setJspBody(body);
+        
+        gridTag.rowCount = 3;
+        gridTag.columnCount = 2;
+        
+        try {
+            gridTag.doTag();
+            fail();
+        }
+        catch (JspException ex) {
+            assertEquals("Duplicate event handler for the event 'cell'.", ex.getMessage());
+        }
+        
+        assertFalse(gridTag.buildInvoked);
+        assertTrue(body.invoked);
+        assertEquals("", out.getOutput());
     }
 }
