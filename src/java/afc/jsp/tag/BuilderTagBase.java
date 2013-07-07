@@ -101,15 +101,15 @@ public abstract class BuilderTagBase extends SimpleTagSupport
 {
     private final TreeMap<String, EventTag> events = new TreeMap<String, EventTag>();
     
-    void register(final EventTag event) throws JspTagException
+    void register(final EventTag eventHandler) throws JspTagException
     {
-        final String name = event.getName();
+        final String name = eventHandler.getName();
         // TODO check if this could be checked by a tag validator
         if (name == null || name.length() == 0) {
             throw new JspTagException("Event name is undefined.");
         }
         // TODO check if this could be checked by a tag validator
-        if (events.put(event.getName(), event) != null) {
+        if (events.put(name, eventHandler) != null) {
             throw new JspTagException("Duplicate event handler for the event '" + name + "'.");
         }
     }
