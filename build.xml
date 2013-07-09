@@ -11,9 +11,12 @@
 	<property name="debug.enabled" value="true"/>
 	<property name="java.src.version" value="1.5"/>
 	
+	<property name="test.src.dir" value="${basedir}/test/java"/>
+	<property name="test.classes.dir" value="${build.dir}/test_classes"/>
+	<property name="test.report.dir" value="${build.dir}/test_report"/>
+	
 	<target name="clean">
-		<delete dir="${classes.dir}" failonerror="true"/>
-		<delete file="${jar.file}" failonerror="true"/>
+		<delete dir="${build.dir}" failonerror="true"/>
 	</target>
 	
 	<target name="init">
@@ -39,4 +42,42 @@
 	</target>
 	
 	<target name="make" depends="compile,jar,init"/>
+	
+	<target name="compileTest" depends="init,compile">
+		<mkdir dir="${test.classes.dir}"/>
+		
+		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="true" source="${java.src.version}"
+				encoding="UTF-8" includeantruntime="false">
+			<classpath>
+				<pathelement location="${classes.dir}"/>
+				<fileset dir="${lib.dir}"/>
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="test" depends="compile,compileTest">
+		<mkdir dir="${test.report.dir}"/>
+		<junit fork="true" forkmode="once" dir="${basedir}" failureProperty="test.failed" printsummary="true">
+			<classpath>
+				<pathelement location="${classes.dir}"/>
+				<pathelement location="${test.classes.dir}"/>
+				<fileset dir="${lib.dir}"/>
+			</classpath>
+			
+			<jvmarg value="-ea"/>
+			
+			<formatter type="xml"/>
+			<batchtest todir="${test.report.dir}">
+				<fileset dir="${test.classes.dir}">
+					<include name="**/*Test.class"/>
+				</fileset>
+			</batchtest>
+		</junit>
+		<junitreport todir="${test.report.dir}">
+			<fileset dir="${test.report.dir}">
+				<include name="TEST-*.xml"/>
+			</fileset>
+			<report todir="${test.report.dir}" format="frames"/>
+		</junitreport>
+	</target>
 </project>
