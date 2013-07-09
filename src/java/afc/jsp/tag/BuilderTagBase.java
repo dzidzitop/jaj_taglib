@@ -101,7 +101,7 @@ public abstract class BuilderTagBase extends SimpleTagSupport
 {
     private final TreeMap<String, EventTag> events = new TreeMap<String, EventTag>();
     
-    void register(final EventTag eventHandler) throws JspTagException
+    final void register(final EventTag eventHandler) throws JspTagException
     {
         final String name = eventHandler.getName();
         // TODO check if this could be checked by a tag validator
