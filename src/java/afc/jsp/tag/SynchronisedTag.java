@@ -16,6 +16,7 @@ public final class SynchronisedTag extends SimpleTagSupport
         if (monitor == null) {
             throw new NullPointerException("monitor");
         }
+        this.monitor = monitor;
     }
     
     @Override
