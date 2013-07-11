@@ -121,7 +121,6 @@ public class SynchronisedTagTest extends TestCase
             }
         }
         
-        assertFalse(testFailed.get());
         assertEquals(2, val.get());
     }
 }
