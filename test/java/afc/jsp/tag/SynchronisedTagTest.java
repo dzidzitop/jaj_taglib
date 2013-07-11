@@ -29,9 +29,31 @@ public class SynchronisedTagTest extends TestCase
         tag.setMonitor(monitor);
     }
     
+    /**
+     * <p>The tag body and a parallel thread (t) created both try to synchronise upon tag's monitor. What should happen:
+     * <ol>
+     *  <li>t is started; t starts waiting for a notification that is issued by the tag body</li>
+     *  <li>the tag body enters into the synchronised context upon monitor (implicitly)</li>
+     *  <li>the tag body notifies t that the body is being executed</li>
+     *  <li>in parallel:
+     *      a) the tag body sets <tt>val</tt> to 1
+     *      b) the thread tries to lock on monitor and then sets <tt>val</tt> to 2</li>
+     *  <li>the test waits for both get finished</li>
+     * </ol>
+     * </p>
+     * 
+     * <p>
+     * <ul>
+     *  <li>if the tag body is executed in the synchronised context upon monitor then 4b) happens before 4a) and
+     *      <tt>val</tt> must be equal to 2</li>
+     *  <li>if the tag body is NOT executed in the synchronised context upon monitor then both 4a->4b and 4b->4a are possible,
+     *      but since the tag body sleeps for a while after notifying t it is likely that 4b happens before 4a and
+     *      <tt>val</tt> is equal to 1</li>
+     * </ul>
+     * </p>
+     */
     public void testSynchronisedCall() throws Exception
     {
-        final AtomicBoolean testFailed = new AtomicBoolean();
         final AtomicBoolean inTagBody = new AtomicBoolean();
         final AtomicInteger val = new AtomicInteger();
         
@@ -47,9 +69,6 @@ public class SynchronisedTagTest extends TestCase
                     }
                     synchronized (monitor) {
                         // this should happen after tag body has been executed
-                        if (val.get() != 1) {
-                            testFailed.set(true);
-                        }
                         val.set(2);
                     }
                 }
