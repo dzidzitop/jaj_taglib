@@ -49,7 +49,7 @@ public final class RoundUtil
             throw new NullPointerException("roundingMode");
         }
         validateFractionDigits(minFractionDigits, maxFractionDigits);
-        return roundImpl(new BigDecimal(number), minFractionDigits, maxFractionDigits, roundingMode).doubleValue();
+        return roundImpl(BigDecimal.valueOf(number), minFractionDigits, maxFractionDigits, roundingMode).doubleValue();
     }
     
     public static BigDecimal round(final BigDecimal number, final int minFractionDigits, final int maxFractionDigits,
