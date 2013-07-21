@@ -39,7 +39,7 @@ public final class RoundUtil
             throw new NullPointerException("roundingMode");
         }
         validateFractionDigits(minFractionDigits, maxFractionDigits);
-        return roundImpl(new BigDecimal(number), minFractionDigits, maxFractionDigits, roundingMode).floatValue();
+        return roundImpl(new BigDecimal(Float.toString(number)), minFractionDigits, maxFractionDigits, roundingMode).floatValue();
     }
     
     public static double round(final double number, final int minFractionDigits, final int maxFractionDigits,
