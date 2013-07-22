@@ -37,6 +37,23 @@ public final class Functions
     public static Object round(final Object number, final int minFractionDigits, final int maxFractionDigits,
             final RoundingMode roundingMode)
     {
+        if (roundingMode == null) {
+            throw new NullPointerException("roundingMode");
+        }
+        if (minFractionDigits < 0) {
+            throw new IllegalArgumentException(MessageFormat.format(
+                    "Negative minFractionDigits: {0}.", String.valueOf(minFractionDigits)));
+        }
+        if (maxFractionDigits < 0) {
+            throw new IllegalArgumentException(MessageFormat.format(
+                    "Negative maxFractionDigits: {0}.", String.valueOf(maxFractionDigits)));
+        }
+        if (minFractionDigits > maxFractionDigits) {
+            throw new IllegalArgumentException(MessageFormat.format(
+                    "minFractionDigits ({0}) is greater than maxFractionDigits ({1}).",
+                    String.valueOf(minFractionDigits), String.valueOf(maxFractionDigits)));
+        }
+        
         if (number == null) {
             return null;
         }
