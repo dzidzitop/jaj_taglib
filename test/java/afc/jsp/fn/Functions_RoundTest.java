@@ -162,6 +162,110 @@ public class Functions_RoundTest extends TestCase
             assertEquals("roundingMode", ex.getMessage());
         }
     }
+    
+    public void testRoundDouble_Zero()
+    {
+        assertEquals(Double.valueOf(0d), Functions.round(0d, 0, 0, RoundingMode.UNNECESSARY));
+        assertEquals(Double.valueOf(0d), Functions.round(0d, 3, 5, RoundingMode.UNNECESSARY));
+        assertEquals(Double.valueOf(0d), Functions.round(0d, 5, 5, RoundingMode.UNNECESSARY));
+    }
+    
+    public void testRoundDouble_IntegerValue()
+    {
+        assertEquals(Double.valueOf(12344d), Functions.round(12344d, 0, 0, RoundingMode.UNNECESSARY));
+        assertEquals(Double.valueOf(12344d), Functions.round(12344d, 3, 5, RoundingMode.UNNECESSARY));
+        assertEquals(Double.valueOf(12344d), Functions.round(12344d, 5, 5, RoundingMode.UNNECESSARY));
+    }
+    
+    public void testRoundDouble_DecimalValue_ExactRounding()
+    {
+        assertEquals(Double.valueOf(12344.32), Functions.round(12344.32d, 2, 2, RoundingMode.UNNECESSARY));
+        assertEquals(Double.valueOf(12344.32d), Functions.round(12344.32d, 3, 5, RoundingMode.UNNECESSARY));
+        assertEquals(Double.valueOf(12344.32d), Functions.round(12344.32d, 5, 5, RoundingMode.UNNECESSARY));
+    }
+    
+    public void testRoundDouble_DecimalValues_RoundingUp()
+    {
+        assertEquals(Double.valueOf(12345d), Functions.round(12344.325d, 0, 0, RoundingMode.UP));
+        assertEquals(Double.valueOf(12344.4d), Functions.round(12344.325d, 0, 1, RoundingMode.UP));
+        assertEquals(Double.valueOf(12344.33d), Functions.round(12344.325d, 0, 2, RoundingMode.UP));
+        assertEquals(Double.valueOf(12344.4d), Functions.round(12344.325d, 1, 1, RoundingMode.UP));
+        assertEquals(Double.valueOf(12344.33d), Functions.round(12344.325d, 2, 2, RoundingMode.UP));
+        assertEquals(Double.valueOf(-12344.33d), Functions.round(-12344.325d, 2, 2, RoundingMode.UP));
+        assertEquals(Double.valueOf(12344.325d), Functions.round(12344.325d, 1, 3, RoundingMode.UP));
+        assertEquals(Double.valueOf(12344.325d), Functions.round(12344.325d, 3, 5, RoundingMode.UP));
+        assertEquals(Double.valueOf(12344.325d), Functions.round(12344.325d, 5, 5, RoundingMode.UP));
+    }
+    
+    public void testRoundDouble_DecimalValues_RoundingDown()
+    {
+        assertEquals(Double.valueOf(12344d), Functions.round(12344.325d, 0, 0, RoundingMode.DOWN));
+        assertEquals(Double.valueOf(12344.3d), Functions.round(12344.325d, 0, 1, RoundingMode.DOWN));
+        assertEquals(Double.valueOf(12344.32d), Functions.round(12344.325d, 0, 2, RoundingMode.DOWN));
+        assertEquals(Double.valueOf(12344.3d), Functions.round(12344.325d, 1, 1, RoundingMode.DOWN));
+        assertEquals(Double.valueOf(12344.32d), Functions.round(12344.325d, 2, 2, RoundingMode.DOWN));
+        assertEquals(Double.valueOf(-12344.32d), Functions.round(-12344.325d, 2, 2, RoundingMode.DOWN));
+        assertEquals(Double.valueOf(12344.325d), Functions.round(12344.325d, 1, 3, RoundingMode.DOWN));
+        assertEquals(Double.valueOf(12344.325d), Functions.round(12344.325d, 3, 5, RoundingMode.DOWN));
+        assertEquals(Double.valueOf(12344.325d), Functions.round(12344.325d, 5, 5, RoundingMode.DOWN));
+    }
+    
+    public void testRoundDouble_DecimalValues_RoundingHalfUp()
+    {
+        assertEquals(Double.valueOf(12344d), Functions.round(12344.325d, 0, 0, RoundingMode.HALF_UP));
+        assertEquals(Double.valueOf(12344.3d), Functions.round(12344.325d, 0, 1, RoundingMode.HALF_UP));
+        assertEquals(Double.valueOf(12344.33d), Functions.round(12344.325d, 0, 2, RoundingMode.HALF_UP));
+        assertEquals(Double.valueOf(12344.3d), Functions.round(12344.325d, 1, 1, RoundingMode.HALF_UP));
+        assertEquals(Double.valueOf(12344.33d), Functions.round(12344.325d, 2, 2, RoundingMode.HALF_UP));
+        assertEquals(Double.valueOf(-12344.33d), Functions.round(-12344.325d, 2, 2, RoundingMode.HALF_UP));
+        assertEquals(Double.valueOf(12344.325d), Functions.round(12344.325d, 1, 3, RoundingMode.HALF_UP));
+        assertEquals(Double.valueOf(12344.325d), Functions.round(12344.325d, 3, 5, RoundingMode.HALF_UP));
+        assertEquals(Double.valueOf(12344.325d), Functions.round(12344.325d, 5, 5, RoundingMode.HALF_UP));
+    }
+    
+    public void testRoundDouble_NegativeMinFractionDigits()
+    {
+        try {
+            Functions.round(12344.325d, -1, 0, RoundingMode.HALF_UP);
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals("Negative minFractionDigits: -1.", ex.getMessage());
+        }
+    }
+    
+    public void testRoundDouble_NegativeMaxFractionDigits()
+    {
+        try {
+            Functions.round(12344.325d, 0, -1, RoundingMode.HALF_UP);
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals("Negative maxFractionDigits: -1.", ex.getMessage());
+        }
+    }
+    
+    public void testRoundDouble_MinFractionDigitsIsGreaterThenMaxFractionDigits()
+    {
+        try {
+            Functions.round(12344.325d, 2001, 2000, RoundingMode.HALF_UP);
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals("minFractionDigits (2001) is greater than maxFractionDigits (2000).", ex.getMessage());
+        }
+    }
+    
+    public void testRoundDouble_NullRoundingMode()
+    {
+        try {
+            Functions.round(12344.3d, 2, 3, null);
+            fail();
+        }
+        catch (NullPointerException ex) {
+            assertEquals("roundingMode", ex.getMessage());
+        }
+    }
 
     private static BigDecimal bd(final String value)
     {
