@@ -1,6 +1,7 @@
 package afc.jsp.fn;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 
 import junit.framework.TestCase;
@@ -364,6 +365,110 @@ public class Functions_RoundTest extends TestCase
     {
         try {
             Functions.round(12344.3f, 2, 3, null);
+            fail();
+        }
+        catch (NullPointerException ex) {
+            assertEquals("roundingMode", ex.getMessage());
+        }
+    }
+    
+    public void testRoundNumber_Integer()
+    {
+        assertEquals(new BigDecimal("12344"), Functions.round(Integer.valueOf(12344), 0, 0, RoundingMode.UNNECESSARY));
+        assertEquals(new BigDecimal("12344.0"), Functions.round(Integer.valueOf(12344), 1, 5, RoundingMode.UNNECESSARY));
+        assertEquals(new BigDecimal("12344.00000"), Functions.round(Integer.valueOf(12344), 5, 5, RoundingMode.UNNECESSARY));
+    }
+    
+    public void testRoundNumber_Long()
+    {
+        assertEquals(new BigDecimal("12344"), Functions.round(Long.valueOf(12344), 0, 0, RoundingMode.UNNECESSARY));
+        assertEquals(new BigDecimal("12344.00"), Functions.round(Long.valueOf(12344), 2, 5, RoundingMode.UNNECESSARY));
+        assertEquals(new BigDecimal("12344.00000"), Functions.round(Long.valueOf(12344), 5, 5, RoundingMode.UNNECESSARY));
+    }
+    
+    public void testRoundNumber_BigInteger()
+    {
+        assertEquals(new BigDecimal("12344"), Functions.round(BigInteger.valueOf(12344), 0, 0, RoundingMode.UNNECESSARY));
+        assertEquals(new BigDecimal("12344.000"), Functions.round(BigInteger.valueOf(12344), 3, 5, RoundingMode.UNNECESSARY));
+        assertEquals(new BigDecimal("12344.00000"), Functions.round(BigInteger.valueOf(12344), 5, 5, RoundingMode.UNNECESSARY));
+    }
+    
+    public void testRoundNumber_CustomNumber()
+    {
+        final Number number = new Number() {
+            @Override
+            public double doubleValue()
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public float floatValue()
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public int intValue()
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public long longValue()
+            {
+                throw new UnsupportedOperationException();
+            }
+            
+            @Override
+            public String toString()
+            {
+                return "100.25";
+            }
+        };
+        assertEquals(new BigDecimal("101"), Functions.round(number, 0, 0, RoundingMode.CEILING));
+        assertEquals(new BigDecimal("100.3"), Functions.round(number, 1, 1, RoundingMode.CEILING));
+        assertEquals(new BigDecimal("100.25"), Functions.round(number, 1, 5, RoundingMode.CEILING));
+        assertEquals(new BigDecimal("100.25000"), Functions.round(number, 5, 5, RoundingMode.CEILING));
+    }
+    
+    public void testRoundNumber_NegativeMinFractionDigits()
+    {
+        try {
+            Functions.round(Integer.valueOf(12344), -2, 0, RoundingMode.HALF_UP);
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals("Negative minFractionDigits: -2.", ex.getMessage());
+        }
+    }
+    
+    public void testRoundNumber_NegativeMaxFractionDigits()
+    {
+        try {
+            Functions.round(Integer.valueOf(12344), 0, -33, RoundingMode.HALF_UP);
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals("Negative maxFractionDigits: -33.", ex.getMessage());
+        }
+    }
+    
+    public void testRoundNumber_MinFractionDigitsIsGreaterThenMaxFractionDigits()
+    {
+        try {
+            Functions.round(Integer.valueOf(12344), 3, 2, RoundingMode.HALF_UP);
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals("minFractionDigits (3) is greater than maxFractionDigits (2).", ex.getMessage());
+        }
+    }
+    
+    public void testRoundNumber_NullRoundingMode()
+    {
+        try {
+            Functions.round(Integer.valueOf(12344), 1, 2, null);
             fail();
         }
         catch (NullPointerException ex) {
