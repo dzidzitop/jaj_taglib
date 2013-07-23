@@ -179,7 +179,7 @@ public class Functions_RoundTest extends TestCase
     
     public void testRoundDouble_DecimalValue_ExactRounding()
     {
-        assertEquals(Double.valueOf(12344.32), Functions.round(12344.32d, 2, 2, RoundingMode.UNNECESSARY));
+        assertEquals(Double.valueOf(12344.32d), Functions.round(12344.32d, 2, 2, RoundingMode.UNNECESSARY));
         assertEquals(Double.valueOf(12344.32d), Functions.round(12344.32d, 3, 5, RoundingMode.UNNECESSARY));
         assertEquals(Double.valueOf(12344.32d), Functions.round(12344.32d, 5, 5, RoundingMode.UNNECESSARY));
     }
@@ -260,6 +260,110 @@ public class Functions_RoundTest extends TestCase
     {
         try {
             Functions.round(12344.3d, 2, 3, null);
+            fail();
+        }
+        catch (NullPointerException ex) {
+            assertEquals("roundingMode", ex.getMessage());
+        }
+    }
+    
+    public void testRoundFloat_Zero()
+    {
+        assertEquals(Float.valueOf(0f), Functions.round(0f, 0, 0, RoundingMode.UNNECESSARY));
+        assertEquals(Float.valueOf(0f), Functions.round(0f, 3, 5, RoundingMode.UNNECESSARY));
+        assertEquals(Float.valueOf(0f), Functions.round(0f, 5, 5, RoundingMode.UNNECESSARY));
+    }
+    
+    public void testRoundFloat_IntegerValue()
+    {
+        assertEquals(Float.valueOf(12344f), Functions.round(12344f, 0, 0, RoundingMode.UNNECESSARY));
+        assertEquals(Float.valueOf(12344f), Functions.round(12344f, 3, 5, RoundingMode.UNNECESSARY));
+        assertEquals(Float.valueOf(12344f), Functions.round(12344f, 5, 5, RoundingMode.UNNECESSARY));
+    }
+    
+    public void testRoundFloat_DecimalValue_ExactRounding()
+    {
+        assertEquals(Float.valueOf(12344.32f), Functions.round(12344.32f, 2, 2, RoundingMode.UNNECESSARY));
+        assertEquals(Float.valueOf(12344.32f), Functions.round(12344.32f, 3, 5, RoundingMode.UNNECESSARY));
+        assertEquals(Float.valueOf(12344.32f), Functions.round(12344.32f, 5, 5, RoundingMode.UNNECESSARY));
+    }
+    
+    public void testRoundFloat_DecimalValues_RoundingUp()
+    {
+        assertEquals(Float.valueOf(12345f), Functions.round(12344.325f, 0, 0, RoundingMode.UP));
+        assertEquals(Float.valueOf(12344.4f), Functions.round(12344.325f, 0, 1, RoundingMode.UP));
+        assertEquals(Float.valueOf(12344.33f), Functions.round(12344.325f, 0, 2, RoundingMode.UP));
+        assertEquals(Float.valueOf(12344.4f), Functions.round(12344.325f, 1, 1, RoundingMode.UP));
+        assertEquals(Float.valueOf(12344.33f), Functions.round(12344.325f, 2, 2, RoundingMode.UP));
+        assertEquals(Float.valueOf(-12344.33f), Functions.round(-12344.325f, 2, 2, RoundingMode.UP));
+        assertEquals(Float.valueOf(12344.325f), Functions.round(12344.325f, 1, 3, RoundingMode.UP));
+        assertEquals(Float.valueOf(12344.325f), Functions.round(12344.325f, 3, 5, RoundingMode.UP));
+        assertEquals(Float.valueOf(12344.325f), Functions.round(12344.325f, 5, 5, RoundingMode.UP));
+    }
+    
+    public void testRoundFloat_DecimalValues_RoundingDown()
+    {
+        assertEquals(Float.valueOf(12344f), Functions.round(12344.325f, 0, 0, RoundingMode.DOWN));
+        assertEquals(Float.valueOf(12344.3f), Functions.round(12344.325f, 0, 1, RoundingMode.DOWN));
+        assertEquals(Float.valueOf(12344.32f), Functions.round(12344.325f, 0, 2, RoundingMode.DOWN));
+        assertEquals(Float.valueOf(12344.3f), Functions.round(12344.325f, 1, 1, RoundingMode.DOWN));
+        assertEquals(Float.valueOf(12344.32f), Functions.round(12344.325f, 2, 2, RoundingMode.DOWN));
+        assertEquals(Float.valueOf(-12344.32f), Functions.round(-12344.325f, 2, 2, RoundingMode.DOWN));
+        assertEquals(Float.valueOf(12344.325f), Functions.round(12344.325f, 1, 3, RoundingMode.DOWN));
+        assertEquals(Float.valueOf(12344.325f), Functions.round(12344.325f, 3, 5, RoundingMode.DOWN));
+        assertEquals(Float.valueOf(12344.325f), Functions.round(12344.325f, 5, 5, RoundingMode.DOWN));
+    }
+    
+    public void testRoundFloat_DecimalValues_RoundingHalfUp()
+    {
+        assertEquals(Float.valueOf(12344f), Functions.round(12344.325f, 0, 0, RoundingMode.HALF_UP));
+        assertEquals(Float.valueOf(12344.3f), Functions.round(12344.325f, 0, 1, RoundingMode.HALF_UP));
+        assertEquals(Float.valueOf(12344.33f), Functions.round(12344.325f, 0, 2, RoundingMode.HALF_UP));
+        assertEquals(Float.valueOf(12344.3f), Functions.round(12344.325f, 1, 1, RoundingMode.HALF_UP));
+        assertEquals(Float.valueOf(12344.33f), Functions.round(12344.325f, 2, 2, RoundingMode.HALF_UP));
+        assertEquals(Float.valueOf(-12344.33f), Functions.round(-12344.325f, 2, 2, RoundingMode.HALF_UP));
+        assertEquals(Float.valueOf(12344.325f), Functions.round(12344.325f, 1, 3, RoundingMode.HALF_UP));
+        assertEquals(Float.valueOf(12344.325f), Functions.round(12344.325f, 3, 5, RoundingMode.HALF_UP));
+        assertEquals(Float.valueOf(12344.325f), Functions.round(12344.325f, 5, 5, RoundingMode.HALF_UP));
+    }
+    
+    public void testRoundFloat_NegativeMinFractionDigits()
+    {
+        try {
+            Functions.round(12344.325f, -1, 0, RoundingMode.HALF_UP);
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals("Negative minFractionDigits: -1.", ex.getMessage());
+        }
+    }
+    
+    public void testRoundFloat_NegativeMaxFractionDigits()
+    {
+        try {
+            Functions.round(12344.325f, 0, -1, RoundingMode.HALF_UP);
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals("Negative maxFractionDigits: -1.", ex.getMessage());
+        }
+    }
+    
+    public void testRoundFloat_MinFractionDigitsIsGreaterThenMaxFractionDigits()
+    {
+        try {
+            Functions.round(12344.325f, 2001, 2000, RoundingMode.HALF_UP);
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals("minFractionDigits (2001) is greater than maxFractionDigits (2000).", ex.getMessage());
+        }
+    }
+    
+    public void testRoundFloat_NullRoundingMode()
+    {
+        try {
+            Functions.round(12344.3f, 2, 3, null);
             fail();
         }
         catch (NullPointerException ex) {
