@@ -22,6 +22,7 @@ public class BuilderTagBase_NoEventsTest extends TestCase
         tag = new NoEventsTag();
         
         tag.setJspBody(body);
+        tag.setJspContext(ctx);
     }
     
     public void testBuildWithNoEvents() throws Exception
