@@ -74,6 +74,6 @@ public final class Functions
         if (number instanceof String) {
             return RoundUtil.round(new BigDecimal((String) number), minFractionDigits, maxFractionDigits, roundingMode);
         }
-        throw new IllegalArgumentException(MessageFormat.format("Unsupported number type: ''{0}''.", number.getClass()));
+        throw new IllegalArgumentException(MessageFormat.format("Unsupported number type: ''{0}''.", number.getClass().getName()));
     }
 }
