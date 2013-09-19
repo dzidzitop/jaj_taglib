@@ -34,19 +34,19 @@ import java.io.Writer;
 public final class DevNull extends Writer
 {
     /**
-     * The only instance of {@code DevNull}.
+     * <p>The only instance of {@code DevNull}.</p>
      */
     public static final DevNull instance = new DevNull();
     
     /**
-     * Prohibits having instances of {@code DevNull} other than {@link #instance}.
+     * <p>Prohibits having instances of {@code DevNull} other than {@link #instance}.</p>
      */
     private DevNull()
     {
     }
     
     /**
-     * Does nothing.
+     * <p>Does nothing.</p>
      */
     @Override
     public void close()
@@ -54,7 +54,7 @@ public final class DevNull extends Writer
     }
     
     /**
-     * Does nothing.
+     * <p>Does nothing.</p>
      */
     @Override
     public void flush()
@@ -62,7 +62,7 @@ public final class DevNull extends Writer
     }
     
     /**
-     * Does nothing.
+     * <p>Does nothing.</p>
      */
     @Override
     public void write(final char[] buf, final int off, final int len)
