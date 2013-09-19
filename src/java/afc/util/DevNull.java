@@ -24,26 +24,48 @@ package afc.util;
 
 import java.io.Writer;
 
+/**
+ * <p>A {@link Writer} that throws away any data that is written to it.
+ * {@code DevNull} is a singleton whose instance is accessed via
+ * the static field {@link #instance}.</p>
+ * 
+ * @author D&#378;mitry La&#365;&#269;uk
+ */
 public final class DevNull extends Writer
 {
+    /**
+     * The only instance of {@code DevNull}.
+     */
     public static final DevNull instance = new DevNull();
     
+    /**
+     * Prohibits having instances of {@code DevNull} other than {@link #instance}.
+     */
     private DevNull()
     {
     }
-
+    
+    /**
+     * Does nothing.
+     */
     @Override
     public void close()
     {
     }
-
+    
+    /**
+     * Does nothing.
+     */
     @Override
     public void flush()
     {
     }
-
+    
+    /**
+     * Does nothing.
+     */
     @Override
-    public void write(final char[] cbuf, final int off, final int len)
+    public void write(final char[] buf, final int off, final int len)
     {
     }
 }
