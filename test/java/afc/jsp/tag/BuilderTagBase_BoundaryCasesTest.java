@@ -47,6 +47,14 @@ public class BuilderTagBase_BoundaryCasesTest extends TestCase
         gridTag.setJspContext(ctx);
     }
     
+    @Override
+    protected void tearDown()
+    {
+        ctx = null;
+        out = null;
+        gridTag = null;
+    }
+    
     private EventTag initEvent(final String name, final char charToPrint)
     {
         return initEvent(gridTag, name, charToPrint);
@@ -169,7 +177,7 @@ public class BuilderTagBase_BoundaryCasesTest extends TestCase
     {
         final EventTag rowStartTag = initEvent("rowStart", '^');
         final EventTag rowEndTag = initEvent("rowEnd", '$');
-        final EventTag cellTag = initEvent(null, '-');
+        final EventTag cellTag = initEvent("", '-');
         
         final CallTagsJspFragment body = new CallTagsJspFragment("foo", rowStartTag, rowEndTag, cellTag);
         gridTag.setJspBody(body);
