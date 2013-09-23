@@ -51,6 +51,15 @@ public class SynchronisedTagTest extends TestCase
         tag.setMonitor(monitor);
     }
     
+    @Override
+    protected void tearDown()
+    {
+        monitor = null;
+        tag = null;
+        out = null;
+        ctx = null;
+    }
+    
     /**
      * <p>The tag body and a parallel thread (t) created both try to synchronise upon tag's monitor. What should happen:
      * <ol>
@@ -144,5 +153,30 @@ public class SynchronisedTagTest extends TestCase
         }
         
         assertEquals(2, val.get());
+    }
+    
+    public void testNullMonitor() throws Exception
+    {
+        try {
+            tag.setMonitor(null);
+            tag.doTag();
+            fail();
+        }
+        catch (NullPointerException ex) {
+            assertEquals("monitor", ex.getMessage());
+        }
+    }
+    
+    public void testEmptyBody() throws Exception
+    {
+        tag.setMonitor(monitor);
+        
+        try {
+            tag.doTag();
+            fail();
+        }
+        catch (JspException ex) {
+            assertEquals("Tag body is undefined.", ex.getMessage());
+        }
     }
 }
