@@ -120,4 +120,18 @@ public class BuilderTagBase_BuildGridTest extends TestCase
         assertTrue(body.invoked);
         assertEquals("^---$^---$", out.getOutput());
     }
+    
+    public void testBuildGrid_TwoRowsThreeColumns_CellTagWithEmptyBody() throws Exception
+    {
+        cellTag.setJspBody(null);
+        
+        gridTag.rowCount = 2;
+        gridTag.columnCount = 3;
+        
+        gridTag.doTag();
+        
+        assertTrue(gridTag.buildInvoked);
+        assertTrue(body.invoked);
+        assertEquals("^$^$", out.getOutput());
+    }
 }
