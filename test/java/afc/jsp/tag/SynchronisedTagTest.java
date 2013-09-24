@@ -24,7 +24,6 @@ package afc.jsp.tag;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.JspException;
@@ -71,50 +70,25 @@ public class SynchronisedTagTest extends TestCase
     }
     
     /**
-     * <p>Verifies that the tag body is executed synchronised on the tag's monitor.</p>
+     * <p>Verifies that the tag body is executed only once and synchronised on the tag's monitor.</p>
      * 
      * @throws Exception if this test fails.
      */
     public void testSynchronisedCall() throws Exception
     {
-        final AtomicBoolean bodyInvoked = new AtomicBoolean();
-        
-        final JspFragment body = new JspFragment()
-        {
-            @Override
-            public JspContext getJspContext()
-            {
-                return ctx;
-            }
-
-            @Override
-            public void invoke(final Writer out) throws JspException, IOException
-            {
-                bodyInvoked.set(true);
-                try {
-                    // Throws an IllegalMonitorStateException if not executed in monitor's synchronised block.
-                    monitor.wait(1);
-                }
-                catch (IllegalMonitorStateException ex) {
-                    fail("Tag body is not invoked synchronised on the tag's monitor.");
-                }
-                catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                    fail();
-                }
-            }
-            
-        };
+        final MockBody body = new MockBody();
+        body.ctx = ctx;
+        body.monitor = monitor;
         
         tag.setJspBody(body);
         
         tag.doTag();
         
-        assertTrue(bodyInvoked.get());
+        assertTrue(body.bodyInvoked);
     }
     
     /**
-     * <p>Verifies that the tag body is executed synchronised on the tag's monitor
+     * <p>Verifies that the tag body is executed only once and synchronised on the tag's monitor
      * and that if an exception is thrown in the tag body then it is not suppressed
      * by {@code SynchronisedTag}.</p>
      * 
@@ -122,36 +96,12 @@ public class SynchronisedTagTest extends TestCase
      */
     public void testSynchronisedCall_TagBodyThrowsException() throws Exception
     {
-        final AtomicBoolean bodyInvoked = new AtomicBoolean();
         final JspException exception = new JspException();
         
-        final JspFragment body = new JspFragment()
-        {
-            @Override
-            public JspContext getJspContext()
-            {
-                return ctx;
-            }
-
-            @Override
-            public void invoke(final Writer out) throws JspException, IOException
-            {
-                bodyInvoked.set(true);
-                try {
-                    // Throws an IllegalMonitorStateException if not executed in monitor's synchronised block.
-                    monitor.wait(1);
-                }
-                catch (IllegalMonitorStateException ex) {
-                    fail("Tag body is not invoked synchronised on the tag's monitor.");
-                }
-                catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                    fail();
-                }
-                throw exception;
-            }
-            
-        };
+        final MockBody body = new MockBody();
+        body.ctx = ctx;
+        body.monitor = monitor;
+        body.exception = exception;
         
         tag.setJspBody(body);
         
@@ -164,7 +114,7 @@ public class SynchronisedTagTest extends TestCase
             assertSame(exception, ex);
         }
         
-        assertTrue(bodyInvoked.get());
+        assertTrue(body.bodyInvoked);
     }
     
     /**
@@ -201,4 +151,42 @@ public class SynchronisedTagTest extends TestCase
             assertEquals("Tag body is undefined.", ex.getMessage());
         }
     }
+    
+    private static class MockBody extends JspFragment
+    {
+        public Object monitor;
+        public boolean bodyInvoked;
+        public JspContext ctx;
+        public JspException exception;
+        
+        @Override
+        public JspContext getJspContext()
+        {
+            return ctx;
+        }
+
+        @Override
+        public void invoke(final Writer out) throws JspException, IOException
+        {
+            assertFalse(bodyInvoked);
+            bodyInvoked = true;
+            
+            try {
+                // Throws an IllegalMonitorStateException if not executed in monitor's synchronised block.
+                monitor.wait(1);
+            }
+            catch (IllegalMonitorStateException ex) {
+                fail("Tag body is not invoked synchronised on the tag's monitor.");
+            }
+            catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+                fail();
+            }
+            
+            if (exception != null) {
+                throw exception;
+            }
+        }
+        
+    };
 }
