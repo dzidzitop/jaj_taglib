@@ -79,7 +79,8 @@ public class SynchronisedTagTest extends TestCase
     {
         final AtomicBoolean bodyInvoked = new AtomicBoolean();
         
-        final JspFragment body = new JspFragment() {
+        final JspFragment body = new JspFragment()
+        {
             @Override
             public JspContext getJspContext()
             {
@@ -91,7 +92,7 @@ public class SynchronisedTagTest extends TestCase
             {
                 bodyInvoked.set(true);
                 try {
-                    // Will throw IllegalMonitorStateException if not executed in monitor's synchronised block.
+                    // Throws an IllegalMonitorStateException if not executed in monitor's synchronised block.
                     monitor.wait(1);
                 }
                 catch (IllegalMonitorStateException ex) {
@@ -124,7 +125,8 @@ public class SynchronisedTagTest extends TestCase
         final AtomicBoolean bodyInvoked = new AtomicBoolean();
         final JspException exception = new JspException();
         
-        final JspFragment body = new JspFragment() {
+        final JspFragment body = new JspFragment()
+        {
             @Override
             public JspContext getJspContext()
             {
@@ -136,7 +138,7 @@ public class SynchronisedTagTest extends TestCase
             {
                 bodyInvoked.set(true);
                 try {
-                    // Will throw IllegalMonitorStateException if not executed in monitor's synchronised block.
+                    // Throws an IllegalMonitorStateException if not executed in monitor's synchronised block.
                     monitor.wait(1);
                 }
                 catch (IllegalMonitorStateException ex) {
