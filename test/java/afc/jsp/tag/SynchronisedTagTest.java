@@ -32,6 +32,11 @@ import javax.servlet.jsp.tagext.JspFragment;
 
 import junit.framework.TestCase;
 
+/**
+ * <p>Unit tests for {@link SynchronisedTag}.</p>
+ * 
+ * @author D&#378;mitry La&#365;&#269;uk
+ */
 public class SynchronisedTagTest extends TestCase
 {
     private Object monitor;
@@ -39,6 +44,9 @@ public class SynchronisedTagTest extends TestCase
     private StringJspWriter out;
     private MockJspContext ctx;
     
+    /**
+     * <p>Initialises each test.</p>
+     */
     @Override
     protected void setUp()
     {
@@ -50,6 +58,9 @@ public class SynchronisedTagTest extends TestCase
         tag.setMonitor(monitor);
     }
     
+    /**
+     * <p>De-initialises each test.</p>
+     */
     @Override
     protected void tearDown()
     {
@@ -59,6 +70,11 @@ public class SynchronisedTagTest extends TestCase
         ctx = null;
     }
     
+    /**
+     * <p>Verifies that the tag body is executed synchronised on the tag's monitor.</p>
+     * 
+     * @throws Exception if this test fails.
+     */
     public void testSynchronisedCall() throws Exception
     {
         final AtomicBoolean bodyInvoked = new AtomicBoolean();
@@ -100,6 +116,8 @@ public class SynchronisedTagTest extends TestCase
      * <p>Verifies that the tag body is executed synchronised on the tag's monitor
      * and that if an exception is thrown in the tag body then it is not suppressed
      * by {@code SynchronisedTag}.</p>
+     * 
+     * @throws Exception if this test fails.
      */
     public void testSynchronisedCall_TagBodyThrowsException() throws Exception
     {
@@ -147,6 +165,11 @@ public class SynchronisedTagTest extends TestCase
         assertTrue(bodyInvoked.get());
     }
     
+    /**
+     * <p>Verifies that {@code null} is not allowed as a tag's monitor object.</p>
+     * 
+     * @throws Exception if this test fails.
+     */
     public void testNullMonitor() throws Exception
     {
         try {
@@ -159,6 +182,11 @@ public class SynchronisedTagTest extends TestCase
         }
     }
     
+    /**
+     * <p>Verifies that {@code SynchronisedTag} requires to have a body.</p>
+     * 
+     * @throws Exception if this test fails.
+     */
     public void testEmptyBody() throws Exception
     {
         tag.setMonitor(monitor);
