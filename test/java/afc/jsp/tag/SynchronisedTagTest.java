@@ -25,7 +25,6 @@ package afc.jsp.tag;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.JspException;
@@ -93,6 +92,57 @@ public class SynchronisedTagTest extends TestCase
         tag.setJspBody(body);
         
         tag.doTag();
+        
+        assertTrue(bodyInvoked.get());
+    }
+    
+    /**
+     * <p>Verifies that the tag body is executed synchronised on the tag's monitor
+     * and that if an exception is thrown in the tag body then it is not suppressed
+     * by {@code SynchronisedTag}.</p>
+     */
+    public void testSynchronisedCall_TagBodyThrowsException() throws Exception
+    {
+        final AtomicBoolean bodyInvoked = new AtomicBoolean();
+        final JspException exception = new JspException();
+        
+        final JspFragment body = new JspFragment() {
+            @Override
+            public JspContext getJspContext()
+            {
+                return ctx;
+            }
+
+            @Override
+            public void invoke(final Writer out) throws JspException, IOException
+            {
+                bodyInvoked.set(true);
+                try {
+                    // Will throw IllegalMonitorStateException if not executed in monitor's synchronised block.
+                    monitor.wait(1);
+                }
+                catch (IllegalMonitorStateException ex) {
+                    fail("Tag body is not invoked synchronised on the tag's monitor.");
+                }
+                catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                    fail();
+                }
+                exception
+            }
+            
+        };
+        
+        tag.setJspBody(body);
+        
+        try {
+            tag.doTag();
+            fail();
+        }
+        catch (JspException ex)
+        {
+            assertSame(exception, ex);
+        }
         
         assertTrue(bodyInvoked.get());
     }
