@@ -128,7 +128,7 @@ public class SynchronisedTagTest extends TestCase
                     Thread.currentThread().interrupt();
                     fail();
                 }
-                exception
+                throw exception;
             }
             
         };
