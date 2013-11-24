@@ -32,36 +32,58 @@ public final class RoundUtil
     {
     }
     
-    public static float round(final float number, final int minFractionDigits, final int maxFractionDigits,
-            final RoundingMode roundingMode)
+    public static float round(final float number, final int maxFractionDigits, final RoundingMode roundingMode)
     {
+        // Validating input.
         if (roundingMode == null) {
             throw new NullPointerException("roundingMode");
         }
-        validateFractionDigits(minFractionDigits, maxFractionDigits);
-        return roundImpl(new BigDecimal(Float.toString(number)), minFractionDigits, maxFractionDigits, roundingMode).floatValue();
+        if (maxFractionDigits < 0) {
+            throw new IllegalArgumentException(MessageFormat.format(
+                    "Negative maxFractionDigits: {0}.", String.valueOf(maxFractionDigits)));
+        }
+        
+        return roundImpl(new BigDecimal(Float.toString(number)), 0, maxFractionDigits, roundingMode).floatValue();
     }
     
-    public static double round(final double number, final int minFractionDigits, final int maxFractionDigits,
-            final RoundingMode roundingMode)
+    public static double round(final double number, final int maxFractionDigits, final RoundingMode roundingMode)
     {
+        // Validating input.
         if (roundingMode == null) {
             throw new NullPointerException("roundingMode");
         }
-        validateFractionDigits(minFractionDigits, maxFractionDigits);
-        return roundImpl(BigDecimal.valueOf(number), minFractionDigits, maxFractionDigits, roundingMode).doubleValue();
+        if (maxFractionDigits < 0) {
+            throw new IllegalArgumentException(MessageFormat.format(
+                    "Negative maxFractionDigits: {0}.", String.valueOf(maxFractionDigits)));
+        }
+        
+        return roundImpl(BigDecimal.valueOf(number), 0, maxFractionDigits, roundingMode).doubleValue();
     }
     
     public static BigDecimal round(final BigDecimal number, final int minFractionDigits, final int maxFractionDigits,
             final RoundingMode roundingMode)
     {
+        // Validating input.
         if (number == null) {
             throw new NullPointerException("number");
         }
         if (roundingMode == null) {
             throw new NullPointerException("roundingMode");
         }
-        validateFractionDigits(minFractionDigits, maxFractionDigits);
+        if (minFractionDigits < 0) {
+            throw new IllegalArgumentException(MessageFormat.format(
+                    "Negative minFractionDigits: {0}.", String.valueOf(minFractionDigits)));
+        }
+        if (maxFractionDigits < 0) {
+            throw new IllegalArgumentException(MessageFormat.format(
+                    "Negative maxFractionDigits: {0}.", String.valueOf(maxFractionDigits)));
+        }
+        if (minFractionDigits > maxFractionDigits) {
+            throw new IllegalArgumentException(MessageFormat.format(
+                    "minFractionDigits ({0}) is greater than maxFractionDigits ({1}).",
+                    String.valueOf(minFractionDigits), String.valueOf(maxFractionDigits)));
+        }
+        
         return roundImpl(number, minFractionDigits, maxFractionDigits, roundingMode);
     }
     
@@ -76,22 +98,5 @@ public final class RoundUtil
             return number.setScale(maxFractionDigits, mode);
         }
         return number;
-    }
-    
-    private static void validateFractionDigits(final int minFractionDigits, final int maxFractionDigits)
-    {
-        if (minFractionDigits < 0) {
-            throw new IllegalArgumentException(MessageFormat.format(
-                    "Negative minFractionDigits: {0}.", String.valueOf(minFractionDigits)));
-        }
-        if (maxFractionDigits < 0) {
-            throw new IllegalArgumentException(MessageFormat.format(
-                    "Negative maxFractionDigits: {0}.", String.valueOf(maxFractionDigits)));
-        }
-        if (minFractionDigits > maxFractionDigits) {
-            throw new IllegalArgumentException(MessageFormat.format(
-                    "minFractionDigits ({0}) is greater than maxFractionDigits ({1}).",
-                    String.valueOf(minFractionDigits), String.valueOf(maxFractionDigits)));
-        }
     }
 }

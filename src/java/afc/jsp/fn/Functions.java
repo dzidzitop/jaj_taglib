@@ -139,11 +139,11 @@ public final class Functions
         }
         if (number instanceof Double)
         {
-            return RoundUtil.round(((Double) number).doubleValue(), minFractionDigits, maxFractionDigits, roundingMode);
+            return RoundUtil.round(((Double) number).doubleValue(), maxFractionDigits, roundingMode);
         }
         if (number instanceof Float)
         {
-            return RoundUtil.round(((Float) number).floatValue(), minFractionDigits, maxFractionDigits, roundingMode);
+            return RoundUtil.round(((Float) number).floatValue(), maxFractionDigits, roundingMode);
         }
         if (number instanceof Number) {
             return RoundUtil.round(new BigDecimal(number.toString()), minFractionDigits, maxFractionDigits, roundingMode);
