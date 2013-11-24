@@ -498,6 +498,13 @@ public class Functions_RoundTest extends TestCase
         }
     }
     
+    public void testRoundString_EmptyString()
+    {
+        assertNull(Functions.round("", 0, 0, RoundingMode.UNNECESSARY));
+        assertNull(Functions.round("", 3, 5, RoundingMode.UP));
+        assertNull(Functions.round("", 5, 5, RoundingMode.HALF_DOWN));
+    }
+    
     public void testRoundString_Zero()
     {
         assertEquals(bd("0"), Functions.round("0", 0, 0, RoundingMode.UNNECESSARY));
