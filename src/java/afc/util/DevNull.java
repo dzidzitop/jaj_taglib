@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2013, Dźmitry Laŭčuk
+/* Copyright (c) 2011-2014, Dźmitry Laŭčuk
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -25,9 +25,9 @@ package afc.util;
 import java.io.Writer;
 
 /**
- * <p>A {@link Writer} that throws away any data that is written to it.
- * {@code DevNull} is a singleton whose instance is accessed via
- * the static field {@link #instance}.</p>
+ * <p>A {@link Writer java.io.Writer} that throws away any data that is written to it.
+ * {@code DevNull} is a singleton whose instance is accessed via the static field
+ * {@link #instance}.</p>
  * 
  * @author D&#378;mitry La&#365;&#269;uk
  */
