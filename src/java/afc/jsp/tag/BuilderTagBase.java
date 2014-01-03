@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2013, Dźmitry Laŭčuk
+/* Copyright (c) 2011-2014, Dźmitry Laŭčuk
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -37,13 +37,13 @@ import afc.util.DevNull;
  * event handlers to render a complex structure by small pieces.
  * Event handlers are <tt>event</tt> tags in the <tt>builder</tt> tag body. The <tt>name</tt> attribute of the
  * <tt>event</tt> tag defines the event this tag subscribes to.
- * The algorithmic part of the rendering process is implemented by the <tt>{@link #build}</tt> function.
- * Each time an event is raised by <tt>builder</tt> (see <tt>{@link #raiseEvent(String)}</tt>)
+ * The algorithmic part of the rendering process is implemented by the {@link #build()} function.
+ * Each time an event is raised by <tt>builder</tt> (see {@link #raiseEvent(String)})
  * the correspondent <tt>event</tt> tag body is evaluated. All parameters to the event handler (if any)
  * are passed in the JSP context.</p>
  * 
  * <p>The advantage of this approach to render content is clear separation between code that generates
- * structure (it is enclosed in tag's @{code build()} function) and code that renders output (it is
+ * structure (it is enclosed in the tag's {@code build()} function) and code that renders output (it is
  * enclosed in event handler tags' bodies). This allows for having simple and straightforward JSP code
  * while keeping all algorithmic complexity in Java code (which is easier to create, test, and document).
  * In addition, it is possible to implement different representations on top of the same algorithm.</p>
@@ -51,7 +51,7 @@ import afc.util.DevNull;
  * <p>An example below demonstrates a simple use case of the <tt>builder</tt>/<tt>event</tt> tags.</p>
  * <h2>Example.</h2>
  * <h3>The builder tag.</h3>
- * <p><pre>{@code
+ * <pre>{@literal
  * public class DigitsTag extends BuilderTagBase
  * { 
  *   protected void build() throws IOException, JspException
@@ -66,21 +66,23 @@ import afc.util.DevNull;
  *     }
  *     raiseEvent("end");
  *   }
- * }}</pre></p>
+ * }}</pre>
+ * 
  * <h3>JSP fragment.</h3>
- * <p><pre>{@code
+ * <pre>{@literal
  * <afc:digits>
  *   <afc:event name="start">digits: [</afc:event>
  *   <afc:event name="end">];</afc:event>
  *   <afc:event name="digit">${digit}</afc:event>
  *   <afc:event name="separator"> </afc:event>
- * </afc:digits>}</pre></p>
+ * </afc:digits>}</pre>
+ * 
  * <h3>JSP output.</h3>
- * <p><pre>{@code digits: [0 1 2 3 4 5 6 7 8 9];}</pre></p>
+ * <pre>{@literal digits: [0 1 2 3 4 5 6 7 8 9];}</pre>
+ * 
  * <p>In this example the JSP code has neither loops nor branches.</p>
  * 
  * <h2>Additional details.</h2>
- * <p>
  * <ul>
  *  <li><tt>builder</tt>'s body is evaluated once and before <tt>build()</tt> is invoked. The content generated
  *      while evaluating the body is omitted</li>
@@ -88,12 +90,11 @@ import afc.util.DevNull;
  *      while having no output rendered</li>
  *  <li>if an exception is thrown while evaluating <tt>builder</tt>'s body then <tt>build()</tt> is not invoked</li>
  *  <li><tt>event</tt> tags could be direct or indirect inner tags of the <tt>builder</tt> tag to be registered
- *      as event handlers</tt>
+ *      as event handlers</li>
  *  <li>only a single event handler could be registered to listen for a given event</li>
  *  <li>it is allowed to have no event handler for an event. In this case the events will be ignored with no error.
  *      Event handler tags with empty bodies will have the same effect</li>
  * </ul>
- * </p>
  *
  * @author D&#378;mitry La&#365;&#269;uk
  */
