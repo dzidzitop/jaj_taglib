@@ -1,4 +1,4 @@
-/* Copyright (c) 2013, Dźmitry Laŭčuk
+/* Copyright (c) 2013-2014, Dźmitry Laŭčuk
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -146,7 +146,8 @@ public final class Functions
             return RoundUtil.round(((Float) number).floatValue(), maxFractionDigits, roundingMode);
         }
         if (number instanceof Number) {
-            return RoundUtil.round(new BigDecimal(number.toString()), minFractionDigits, maxFractionDigits, roundingMode);
+            return RoundUtil.round(new BigDecimal(number.toString()),
+                    minFractionDigits, maxFractionDigits, roundingMode);
         }
         if (number instanceof String) {
             final String str = (String) number;
@@ -155,6 +156,7 @@ public final class Functions
             }
             return RoundUtil.round(new BigDecimal(str), minFractionDigits, maxFractionDigits, roundingMode);
         }
-        throw new IllegalArgumentException(MessageFormat.format("Unsupported number type: ''{0}''.", number.getClass().getName()));
+        throw new IllegalArgumentException(MessageFormat.format(
+                "Unsupported number type: ''{0}''.", number.getClass().getName()));
     }
 }
