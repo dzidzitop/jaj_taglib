@@ -74,7 +74,7 @@ import afc.util.DevNull;
  *   protected void build() throws IOException, JspException
  *   {
  *     raiseEvent("start");
- *     for (int i = 0; i &amp; 10; ++i) {
+ *     for (int i = 0; i < 10; ++i) {
  *       if (i != 0) {
  *         raiseEvent("separator");
  *       }
