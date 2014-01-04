@@ -49,9 +49,25 @@ import afc.util.DevNull;
  * to create, test, and document). In addition, it is possible to implement different representations
  * on top of the same algorithm.</p>
  * 
+ * <p>Below is the additional information that is useful to implement a custom {@code <builder>}
+ * tag and use is properly:</p>
+ * <ul>
+ *  <li>{@code <builder>}'s body is evaluated once and before {@code build()} is invoked. The content
+ *      generated while evaluating the body is omitted.</li>
+ *  <li>It is allowed to have no body for the {@code <builder>} tag. The {@code build()} function
+ *      is invoked in this case while having no output rendered.</li>
+ *  <li>If an exception is thrown while evaluating {@code <builder>}'s body then {@code build()}
+ *      is not invoked.</li>
+ *  <li>{@code <event>} tags could be direct or indirect inner tags of the {@code <builder>} tag
+ *      to be registered as event handlers.</li>
+ *  <li>Only a single event handler could be registered to listen for a given event.</li>
+ *  <li>It is allowed to have no event handler for an event. In this case the events are ignored
+ *      with no error. Event handler tags with empty bodies have the same effect.</li>
+ * </ul>
+ * 
  * <p>An example below demonstrates a simple use case of the {@code <builder>}/{@code <event>} tags.</p>
- * <h2>Example.</h2>
- * <h3>The builder tag.</h3>
+ * <h3>Example</h3>
+ * <h4>The builder tag</h4>
  * <pre>{@literal
  * public class DigitsTag extends BuilderTagBase
  * { 
@@ -69,7 +85,7 @@ import afc.util.DevNull;
  *   }
  * }}</pre>
  * 
- * <h3>JSP fragment.</h3>
+ * <h4>JSP fragment</h4>
  * <pre>{@literal
  * <afc:digits>
  *   <afc:event name="start">digits: [</afc:event>
@@ -78,25 +94,10 @@ import afc.util.DevNull;
  *   <afc:event name="separator"> </afc:event>
  * </afc:digits>}</pre>
  * 
- * <h3>JSP output.</h3>
+ * <h4>JSP output</h4>
  * <pre>{@literal digits: [0 1 2 3 4 5 6 7 8 9];}</pre>
  * 
  * <p>In this example the JSP code has neither loops nor branches.</p>
- * 
- * <h2>Additional details.</h2>
- * <ul>
- *  <li>{@code <builder>}'s body is evaluated once and before {@code build()} is invoked. The content
- *      generated while evaluating the body is omitted.</li>
- *  <li>It is allowed to have no body for the {@code <builder>} tag. The {@code build()} function
- *      is invoked in this case while having no output rendered.</li>
- *  <li>If an exception is thrown while evaluating {@code <builder>}'s body then {@code build()}
- *      is not invoked.</li>
- *  <li>{@code <event>} tags could be direct or indirect inner tags of the {@code <builder>} tag
- *      to be registered as event handlers.</li>
- *  <li>Only a single event handler could be registered to listen for a given event.</li>
- *  <li>It is allowed to have no event handler for an event. In this case the events are ignored
- *      with no error. Event handler tags with empty bodies have the same effect.</li>
- * </ul>
  *
  * @author D&#378;mitry La&#365;&#269;uk
  */
