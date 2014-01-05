@@ -1,4 +1,4 @@
-/* Copyright (c) 2013, Dźmitry Laŭčuk
+/* Copyright (c) 2013-2014, Dźmitry Laŭčuk
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -42,31 +42,32 @@ public class MockJspContext extends JspContext
     }
     
     @Override
-    public Object findAttribute(String arg0)
+    public Object findAttribute(final String name)
     {
         throw new UnsupportedOperationException("implement me");
     }
 
     @Override
-    public Object getAttribute(String arg0)
+    public Object getAttribute(final String name)
     {
         throw new UnsupportedOperationException("implement me");
     }
 
     @Override
-    public Object getAttribute(String arg0, int arg1)
+    public Object getAttribute(final String name, final int scope)
     {
         throw new UnsupportedOperationException("implement me");
     }
 
     @Override
-    public Enumeration getAttributeNamesInScope(int arg0)
+    @SuppressWarnings("unchecked") // The raw return type is forced by the interface JspContext.
+    public Enumeration getAttributeNamesInScope(final int scope)
     {
         throw new UnsupportedOperationException("implement me");
     }
 
     @Override
-    public int getAttributesScope(String arg0)
+    public int getAttributesScope(final String name)
     {
         throw new UnsupportedOperationException("implement me");
     }
@@ -90,25 +91,25 @@ public class MockJspContext extends JspContext
     }
 
     @Override
-    public void removeAttribute(String arg0)
+    public void removeAttribute(final String name)
     {
         throw new UnsupportedOperationException("implement me");
     }
 
     @Override
-    public void removeAttribute(String arg0, int arg1)
+    public void removeAttribute(final String name, final int scope)
     {
         throw new UnsupportedOperationException("implement me");
     }
 
     @Override
-    public void setAttribute(String arg0, Object arg1)
+    public void setAttribute(final String name, final Object value)
     {
         throw new UnsupportedOperationException("implement me");
     }
 
     @Override
-    public void setAttribute(String arg0, Object arg1, int arg2)
+    public void setAttribute(final String name, final Object value, final int scope)
     {
         throw new UnsupportedOperationException("implement me");
     }
