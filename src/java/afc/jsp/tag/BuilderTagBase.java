@@ -118,6 +118,15 @@ public abstract class BuilderTagBase extends SimpleTagSupport
         }
     }
     
+    /**
+     * <p>Executes this tag. Refer to the {@link BuilderTagBase class description} for
+     * the details about semantics of this tag.</p>
+     * 
+     * @throws JspException if a {@link JspException javax.servlet.jsp.JspException} is thrown by
+     *      the body of this tag.
+     * @throws IOException if a {@link IOException java.io.IOException} is thrown by the body of
+     *      this tag.
+     */
     @Override
     public final void doTag() throws JspException, IOException
     {
