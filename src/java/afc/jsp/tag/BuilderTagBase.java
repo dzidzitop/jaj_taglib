@@ -123,9 +123,9 @@ public abstract class BuilderTagBase extends SimpleTagSupport
      * the details about semantics of this tag.</p>
      * 
      * @throws JspException if a {@link JspException javax.servlet.jsp.JspException} is thrown by
-     *      the body of this tag.
+     *      the body of this tag or by {@link #build()}.
      * @throws IOException if a {@link IOException java.io.IOException} is thrown by the body of
-     *      this tag.
+     *      this tag or by {@link #build()}.
      */
     @Override
     public final void doTag() throws JspException, IOException
