@@ -137,6 +137,26 @@ public abstract class BuilderTagBase extends SimpleTagSupport
         build();
     }
     
+    /**
+     * <p>A member function that performs the algorithmic part of this tag. It must be
+     * implemented by a concrete {@code <builder>} tag in order to implement the functionality
+     * this tag provides. Generally, an implementation of {@code build()} is an algorithm that
+     * {@link #raiseEvent(String) raises} a series of events, according to the requirements.
+     * Event handlers are the {@link EventTag &lt;event&gt;} tags placed within the body of
+     * this tag. Each {@code <event>} tag renders some output when an event with the given name
+     * is raised. The output it renders could depend on the state of the JSP context it is
+     * invoked in.</p>
+     * 
+     * <p>It is safe to raise an event if there is no event handler registered with such
+     * a name. The event is ignored in this case.</p>
+     * 
+     * @throws JspException if a {@link JspException javax.servlet.jsp.JspException} needs
+     *      to be thrown by {@code build()} or if it is thrown within the body of some
+     *      nested {@code <event>} tag.
+     * @throws IOException if a {@link IOException java.io.IOException} needs to be thrown
+     *      by {@code build()} or if it is thrown within the body of some nested
+     *      {@code <event>} tag.
+     */
     protected abstract void build() throws JspException, IOException;
     
     protected final void raiseEvent(final String name) throws JspException, IOException
