@@ -44,8 +44,22 @@ public final class EventTag extends SimpleTagSupport
         return name;
     }
     
+    /**
+     * <p>Executes this tag. Refer to the {@link EventTag class description} for the details
+     * about semantics of this tag.</p>
+     * 
+     * @throws JspTagException in any of the following cases:
+     *      <ul>
+     *          <li>this tag is invoked outside the body of some
+     *              {@link BuilderTagBase &lt;builder&gt;} tag</li>
+     *          <li>an event handler with the same name is already registered for the parent
+     *              {@code <builder>} tag</li>
+     *          <li>the {@link #setName(String) name} attribute if this tag is either empty or
+     *              {@code null}</li>
+     *      </ul>
+     */
     @Override
-    public void doTag() throws JspException, IOException
+    public final void doTag() throws JspTagException
     {
         final JspTag parent = findAncestorWithClass(this, BuilderTagBase.class);
         if (parent == null) {
