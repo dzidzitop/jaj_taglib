@@ -32,16 +32,15 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 public final class EventTag extends SimpleTagSupport
 {
-    private String name;
+    /* The name of the event to subscribe to.
+     * 
+     * It is package-private to be accessible for BuilderTagBase.
+     */
+    String name;
     
     public void setName(final String name)
     {
         this.name = name;
-    }
-    
-    public String getName()
-    {
-        return name;
     }
     
     /**

@@ -107,7 +107,7 @@ public abstract class BuilderTagBase extends SimpleTagSupport
     
     final void register(final EventTag eventHandler) throws JspTagException
     {
-        final String name = eventHandler.getName();
+        final String name = eventHandler.name;
         // TODO check if this could be checked by a tag validator
         if (name == null || name.length() == 0) {
             throw new JspTagException("Event name is undefined.");
