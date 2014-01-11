@@ -32,12 +32,23 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 public final class EventTag extends SimpleTagSupport
 {
-    /* The name of the event to subscribe to.
+    /* The name of events to subscribe to.
      * 
      * It is package-private to be accessible for BuilderTagBase.
      */
     String name;
     
+    /**
+     * <p>Sets the name of events to subscribe this event handler to. The parent
+     * {@link BuilderTagBase &lt;builder&gt;} tag invokes the body of this {@code <event>} tag
+     * (if the body is defined) when an event with the given name is fired.</p>
+     * 
+     * @param name the event name to be set. It must be neither {@code null} nor an empty
+     *      string. In addition, this name must be unique among other {@code <event>} tags
+     *      that are nested within the same {@code <builder>} tag. Otherwise
+     *      a {@link JspTagException javax.servlet.jsp.JspTagException} is thrown by
+     *      this {@code <builder>} tag.
+     */
     public void setName(final String name)
     {
         this.name = name;
