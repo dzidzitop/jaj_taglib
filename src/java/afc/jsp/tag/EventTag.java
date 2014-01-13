@@ -30,6 +30,39 @@ import javax.servlet.jsp.tagext.JspFragment;
 import javax.servlet.jsp.tagext.JspTag;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
+/**
+ * <p>A {@link javax.servlet.jsp.tagext.SimpleTag simple tag} that registers an event handler
+ * to a {@link BuilderTagBase &lt;builder&gt;} tag. An event handler is a body of a given
+ * {@code <event>} tag which is invoked each time an event with the given name is fired
+ * by the {@code <builder> tag}. The name of events this event handler processes is defined
+ * by the tag attribute {@link #setName(String) name}. Generally, an event handler renders
+ * some output basing on the state of the JSP context with which the body of the {@code <event>}
+ * tag is evaluated.</p>
+ * 
+ * <h3>Tag input</h3>
+ * <table border="1">
+ * <thead>
+ *  <tr><th>Attribute</th>
+ *      <th>Required?</th>
+ *      <th>Description</th></tr>
+ * </thead>
+ * <tbody>
+ *  <tr><td><em>tag body</em></td>
+ *      <td>no</td>
+ *      <td>The JSP fragment that is executed each time an event with the given name
+ *          is fired by the parent {@code <builder>} tag.</td></tr>
+ *  <tr><td>name</td>
+ *      <td>yes</td>
+ *      <td>The name of events that are handled by the body of this {@code <event>} tag.
+ *          It must be neither {@code null} nor an empty string.</td></tr>
+ * </tbody>
+ * </table>
+ * 
+ * <p>Refer to {@link BuilderTagBase} for a example of usage of the tag pair
+ * {@code <builder>}/{@code <event>}.</p>
+ * 
+ * @author D&#378;mitry La&#365;&#269;uk
+ */
 public final class EventTag extends SimpleTagSupport
 {
     /* The name of events to subscribe to.
