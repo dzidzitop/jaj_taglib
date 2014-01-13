@@ -161,6 +161,21 @@ public abstract class BuilderTagBase extends SimpleTagSupport
      */
     protected abstract void build() throws JspException, IOException;
     
+    /**
+     * <p>Fires an event with a given name. If there is an {@link EventTag event handler}
+     * registered for events with the given name then it is invoked. Otherwise this
+     * invocation is no-op. The data that is associated with the event fired is generally
+     * passed indirectly with the {@link #getJspContext() JSP context}.</p>
+     * 
+     * @param name the name of the event to be fired. It should be not {@code null},
+     *      since there is no event handler for events with the undefined name.
+     * 
+     * @throws JspException if a {@link JspException javax.servlet.jsp.JspException} is
+     *      thrown by the event handler. The same exception is thrown outside with no
+     *      modification.
+     * @throws IOException if a {@link IOException java.io.IOException} is thrown by
+     *      the event handler. The same exception is thrown outside with no modification.
+     */
     protected final void raiseEvent(final String name) throws JspException, IOException
     {
         final EventTag event = events.get(name);
