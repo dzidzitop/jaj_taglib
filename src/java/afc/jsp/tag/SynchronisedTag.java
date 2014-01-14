@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2013, Dźmitry Laŭčuk
+/* Copyright (c) 2011-2014, Dźmitry Laŭčuk
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -30,9 +30,9 @@ import javax.servlet.jsp.tagext.JspFragment;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 /**
- * <p>A {@code javax.servlet.jsp.tagext.SimpleTag} that executes its body synchronised
- * upon the monitor of the object specified with the attribute <em>monitor</em>. In
- * pseudo-code this could be written as follows:</p>
+ * <p>A {@link javax.servlet.jsp.tagext.SimpleTag simple tag} that executes its body
+ * synchronised upon the monitor of the object specified with the attribute <em>monitor</em>.
+ * In pseudo-code this could be written as follows:</p>
  * 
  * <pre>
  * final Object object = someObject;

@@ -33,14 +33,14 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 import afc.util.DevNull;
 
 /**
- * <p>An abstract simple tag whose sub-classes produce a sequence of events which can be handled
- * by event handlers to render a complex structure by small pieces. Event handlers are
- * the {@link EventTag &lt;event&gt;} tags in the {@code <builder>} tag body. The {@code name}
- * attribute of the {@code event} tag defines the event this tag subscribes to. The algorithmic
- * part of the rendering process is implemented by the {@link #build()} function. Each time an event
- * is raised by {@code <builder>} (see {@link #raiseEvent(String)}) the correspondent
- * {@code <event>} tag body is evaluated. All parameters to the event handler (if any) are passed
- * in the JSP context.</p>
+ * <p>An abstract {@link javax.servlet.jsp.tagext.SimpleTag simple tag} whose sub-classes produce
+ * a sequence of events which can be handled by event handlers to render a complex structure by
+ * small pieces. Event handlers are the {@link EventTag &lt;event&gt;} tags in
+ * the {@code <builder>} tag body. The {@code name} attribute of the {@code event} tag defines
+ * the event this tag subscribes to. The algorithmic part of the rendering process is implemented
+ * by the {@link #build()} function. Each time an event is raised by {@code <builder>} (see
+ * {@link #raiseEvent(String)}) the correspondent {@code <event>} tag body is evaluated. All
+ * parameters to the event handler (if any) are passed in the JSP context.</p>
  * 
  * <p>The advantage of this approach to render content is clear separation between code that
  * generates structure (it is enclosed in the tag's {@code build()} function) and code that renders
