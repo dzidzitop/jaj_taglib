@@ -1,4 +1,4 @@
-/* Copyright (c) 2013, Dźmitry Laŭčuk
+/* Copyright (c) 2013-2014, Dźmitry Laŭčuk
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,14 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.MessageFormat;
 
+/**
+ * <p>Provides functions for rounding {@link #round(float, int, RoundingMode) float},
+ * {@link #round(double, int, RoundingMode) double},
+ * {@link #round(BigDecimal, int, int, RoundingMode) java.math.BigDecimal} values in a given
+ * {@link RoundingMode rounding mode} with a limit to min/max fraction digits applied.</p>
+ * 
+ * @author D&#378;mitry La&#365;&#269;uk
+ */
 public final class RoundUtil
 {
     private RoundUtil()
